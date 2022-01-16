@@ -6,7 +6,7 @@
 /*   By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 18:32:40 by tshimoda          #+#    #+#             */
-/*   Updated: 2022/01/16 13:07:31 by tshimoda         ###   ########.fr       */
+/*   Updated: 2022/01/16 14:01:45 by tshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_perror_nl_free(t_container *unix, char *message)
 	write(2, "\n", 1);
 	// ft_free_table(unix->bins);
 	free(unix->cmd);
+	ft_printf("test \n");
 	exit(EXIT_FAILURE);
 }
 
@@ -60,27 +61,26 @@ char *ft_find_path_variable(t_container *unix)
 
 t_result	ft_is_valid_command(t_container *unix, size_t i, char *cmd)
 {
-	// char **paths;
-	char *test_road;
-	size_t nb;
+	char **paths;
+	// char *test_road;
+	// size_t nb;
 	
-	// paths = ft_split(ft_find_path_variable(unix), ':');
-	nb = 0;
-	while (unix->bins[nb] != NULL)
+	paths = ft_split(ft_find_path_variable(unix), ':');
+	// nb = 0;
+	while (*paths != NULL)
 	{
-		test_road = ft_strjoin_symbol(unix->bins[nb], '/', cmd);
+		unix->cmd[i].path = ft_strjoin_symbol(*paths, '/', cmd);
 		// Vérification à faire?
-		if (access(test_road, F_OK) == SUCCESS)
+		if (access(unix->cmd[i].path, F_OK) == SUCCESS)
 		{
-			ft_printf("THE CORRECT PATH IS %s and path number is %d\n", test_road, nb);
-			unix->cmd[i].path = test_road;
-			free(test_road);
+			ft_printf("THE CORRECT PATH IS %s\n", unix->cmd[i].path);
+			ft_free_table(paths);
 			return (SUCCESS);
 		}
-		free(test_road);
-		test_road = NULL;
-		nb++;
+		free(unix->cmd[i].path);
+		paths++;
 	}
+	ft_free_table(paths);
 	return (FAIL);
 }
 
@@ -89,7 +89,7 @@ void ft_parse_command_line(t_container *unix)
 	size_t	i;
 	
 	i = 1;
-	unix->bins = ft_split(ft_find_path_variable(unix), ':');
+	// unix->bins = ft_split(ft_find_path_variable(unix), ':');
 	// Vérification à faire?
 	while (unix->argv[i] != NULL && unix->argv[i + 1] != NULL)
 	{
@@ -105,7 +105,6 @@ void ft_parse_command_line(t_container *unix)
 		}
 		i++;
 	}
-	
 	// ft_free_table(unix->bins);
 }
 
@@ -139,5 +138,6 @@ int	main(int argc, char **argv, char **envp)
 	{
 		ft_printf("Incorrect input. Please enter : file1 cmd1 cmd2 file2");
 	}
+	fscanf(stdin, "c"); // wait for user to enter input from keyboard
 	return (0);
 }
