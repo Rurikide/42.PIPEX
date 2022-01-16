@@ -6,7 +6,7 @@
 #    By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/01 22:25:32 by tshimoda          #+#    #+#              #
-#    Updated: 2022/01/09 18:32:11 by tshimoda         ###   ########.fr        #
+#    Updated: 2022/01/16 13:07:18 by tshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SDIR= sources
 ODIR= objects
 
 SRCS= main.c \
+	#	process.c \
 
 
 OBJS= $(SRCS:.c=.o)
