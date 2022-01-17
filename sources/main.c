@@ -6,21 +6,29 @@
 /*   By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 18:32:40 by tshimoda          #+#    #+#             */
-/*   Updated: 2022/01/16 14:01:45 by tshimoda         ###   ########.fr       */
+/*   Updated: 2022/01/16 20:00:49 by tshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void	ft_perror_nl_free(t_container *unix, char *message)
+void	ft_perror_nl_free(t_container *input, char *message)
 {
+	int i;
+
+	i = 1;
 	write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
-	// ft_free_table(unix->bins);
-	free(unix->cmd);
-	ft_printf("test \n");
+	while (i < input->argc - 1)
+	{
+		ft_free_table(input->cmd[i].param);
+		free(input->cmd[i].path);
+		i++;
+	}
+	free(input->cmd);
 	exit(EXIT_FAILURE);
 }
+
 
 char	*ft_strjoin_symbol(char *str1, char symbol, char *str2)
 {
@@ -45,67 +53,63 @@ char	*ft_strjoin_symbol(char *str1, char symbol, char *str2)
 	return (new_str); 
 }
 
-char *ft_find_path_variable(t_container *unix)
+t_result	ft_is_valid_command(t_container *input, int i, char *cmd)
 {
-	if (unix->envp == NULL)
-		return (NULL);
-	while (unix->envp != NULL)
-	{
-		if (ft_strncmp(*unix->envp, "PATH=", 5) == SUCCESS)
-			return (&(*unix->envp)[6]);
-		else
-			unix->envp++;
-	}
-	return (NULL);
-}
-
-t_result	ft_is_valid_command(t_container *unix, size_t i, char *cmd)
-{
-	char **paths;
-	// char *test_road;
-	// size_t nb;
+	size_t nb;
 	
-	paths = ft_split(ft_find_path_variable(unix), ':');
-	// nb = 0;
-	while (*paths != NULL)
+	nb = 0;
+	while (input->bins[nb] != NULL)
 	{
-		unix->cmd[i].path = ft_strjoin_symbol(*paths, '/', cmd);
+		input->cmd[i].path = ft_strjoin_symbol(input->bins[nb], '/', cmd);
 		// Vérification à faire?
-		if (access(unix->cmd[i].path, F_OK) == SUCCESS)
+		if (access(input->cmd[i].path, F_OK) == SUCCESS)
 		{
-			ft_printf("THE CORRECT PATH IS %s\n", unix->cmd[i].path);
-			ft_free_table(paths);
+			ft_printf("THE CORRECT PATH IS %s and path number is %d\n", input->cmd[i].path, nb);
 			return (SUCCESS);
 		}
-		free(unix->cmd[i].path);
-		paths++;
+		free(input->cmd[i].path);
+		nb++;
 	}
-	ft_free_table(paths);
 	return (FAIL);
 }
 
-void ft_parse_command_line(t_container *unix)
+void ft_parse_command_line(t_container *input)
 {
-	size_t	i;
+	int	i;
 	
 	i = 1;
-	// unix->bins = ft_split(ft_find_path_variable(unix), ':');
+	input->bins = ft_split(ft_find_path_variable(input), ':');
 	// Vérification à faire?
-	while (unix->argv[i] != NULL && unix->argv[i + 1] != NULL)
+	while (input->argv[i] && input->argv[i + 1])
 	{
 		ft_printf("checking cmd #%d\n", i);
-		unix->cmd[i].param = ft_split(unix->argv[i], ' ');
-		if (unix->cmd[i].param == NULL)
+		input->cmd[i].param = ft_split(input->argv[i], ' ');
+		// Vérification à faire?
+		if (input->cmd[i].param == NULL)
 		{
-			ft_perror_nl_free(unix, "Error parse cmd");
+			ft_perror_nl_free(input, "Error parse cmd");
 		}
-		if (ft_is_valid_command(unix, i, unix->cmd[i].param[0]) == FAIL)
+		if (ft_is_valid_command(input, i, input->cmd[i].param[0]) == FAIL)
 		{
-			ft_perror_nl_free(unix, "cmd is invalid");
+			ft_perror_nl_free(input, "cmd is invalid");
 		}
 		i++;
 	}
-	// ft_free_table(unix->bins);
+	ft_free_table(input->bins);
+}
+
+char *ft_find_path_variable(t_container *input)
+{
+	if (input->envp == NULL)
+		return (NULL);
+	while (input->envp != NULL)
+	{
+		if (ft_strncmp(*input->envp, "PATH=", 5) == SUCCESS)
+			return (&(*input->envp)[6]);
+		else
+			input->envp++;
+	}
+	return (NULL);
 }
 
 void init_container(t_container *new, int argc, char **argv, char **envp)
@@ -113,31 +117,30 @@ void init_container(t_container *new, int argc, char **argv, char **envp)
 	new->argc = argc;
 	new->argv = argv;
 	new->envp = envp;
+	new->bins = NULL;
 
-	new->cmd = (t_cmd *)ft_calloc(argc - 2, sizeof(t_cmd));
-	if (!new->cmd)
-	{
-		// DOIS-JE FREE NEW->CMD???
-		ft_perror_nl_free(new, "Error malloc");
-	}
+	new->cmd =  malloc(sizeof(t_cmd) * (argc - 1));
+	// if (!new->cmd)
+	// {
+	// 	// DOIS-JE FREE NEW->CMD???
+	// 	ft_perror_nl_free(new, "Error malloc");
+	// }
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_container	unix;
-
+	t_container	input;
+	
 	if (argc == 5)
 	{
-		init_container(&unix, argc - 1, &argv[1], envp);
-		ft_parse_command_line(&unix);
-		// ft_prepare_x_process(&unix);
-		// ft_free_table(unix.bins);
-		free(unix.cmd);
+		init_container(&input, argc - 1, &argv[1], envp);
+		ft_parse_command_line(&input);
+		ft_prepare_x_process(&input);
+		free(input.cmd);
 	}
 	else
 	{
 		ft_printf("Incorrect input. Please enter : file1 cmd1 cmd2 file2");
 	}
-	fscanf(stdin, "c"); // wait for user to enter input from keyboard
 	return (0);
 }

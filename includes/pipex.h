@@ -6,7 +6,7 @@
 /*   By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 18:03:11 by tshimoda          #+#    #+#             */
-/*   Updated: 2022/01/16 13:04:45 by tshimoda         ###   ########.fr       */
+/*   Updated: 2022/01/16 20:12:19 by tshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ typedef struct s_container
 }	t_container;
 
 void		init_container(t_container *new, int argc, char **argv, char **envp);
-void		ft_parse_command_line(t_container *unix);
-char		*ft_find_path_variable(t_container *unix);
-t_result	ft_is_valid_command(t_container *unix, size_t i, char *cmd);
+void		ft_parse_command_line(t_container *input);
+char		*ft_find_path_variable(t_container *input);
+t_result	ft_is_valid_command(t_container *input, int i, char *cmd);
 char		*ft_strjoin_symbol(char *str1, char symbol, char *str2);
-void		ft_perror_nl_free(t_container *unix, char *message);
-void		ft_prepare_x_process(t_container *unix);
-void		ft_pipe_x_process(t_container *unix, int nb, int src_file_fd, int res_file_fd);
+void		ft_perror_nl_free(t_container *input, char *message);
+void		ft_prepare_x_process(t_container *input);
+void		ft_pipe_x_process(t_container *input, int i, int src_file_fd, int res_file_fd);
 
 #endif
