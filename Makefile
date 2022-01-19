@@ -6,7 +6,7 @@
 #    By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/01 22:25:32 by tshimoda          #+#    #+#              #
-#    Updated: 2022/01/16 13:07:18 by tshimoda         ###   ########.fr        #
+#    Updated: 2022/01/18 20:58:10 by tshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,13 @@ AR= ar rc
 RM= rm -rf
 
 CC= gcc
-CFLAGS= -Wall -Werror -Wextra -c -g
+CFLAGS= -Wall -Werror -Wextra -c
 
 SDIR= sources
 ODIR= objects
 
 SRCS= main.c \
-	#	process.c \
+		process.c \
 
 
 OBJS= $(SRCS:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 18:03:11 by tshimoda          #+#    #+#             */
-/*   Updated: 2022/01/16 20:12:19 by tshimoda         ###   ########.fr       */
+/*   Updated: 2022/01/18 22:19:34 by tshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,11 @@
 # include "../libft/libsources/libft.h"
 # include "../libft/libsources/ft_printf.h"
 
-enum s_pipe
-{
-	read_fd = 0,
-	write_fd = 1,
-} t_pipe;
-
 typedef enum s_result
 {
 	SUCCESS = 0,
 	FAIL = -1,
-} t_result;
+}	t_result;
 
 typedef struct s_cmd
 {
@@ -45,13 +39,14 @@ typedef struct s_container
 	t_cmd	*cmd;
 }	t_container;
 
-void		init_container(t_container *new, int argc, char **argv, char **envp);
+void		init_container(t_container *new, int ac, char **av, char **envp);
 void		ft_parse_command_line(t_container *input);
 char		*ft_find_path_variable(t_container *input);
 t_result	ft_is_valid_command(t_container *input, int i, char *cmd);
-char		*ft_strjoin_symbol(char *str1, char symbol, char *str2);
-void		ft_perror_nl_free(t_container *input, char *message);
+void		ft_perror_nl_free(t_container *input, int i, char *message);
+void		ft_perror_cmd_free(t_container *input, int i, char *message);
 void		ft_prepare_x_process(t_container *input);
-void		ft_pipe_x_process(t_container *input, int i, int src_file_fd, int res_file_fd);
+void		ft_pipe_x_process(t_container *input, int i, int i_fd, int o_fd);
+void		free_container(t_container *input);
 
 #endif
