@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process.c                                          :+:      :+:    :+:   */
+/*   process_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 10:58:48 by tshimoda          #+#    #+#             */
-/*   Updated: 2022/01/19 17:48:36 by tshimoda         ###   ########.fr       */
+/*   Updated: 2022/01/19 18:11:59 by tshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/pipex_bonus.h"
 
 void	ft_perror_nl_free(t_container *input, int i, char *message)
 {

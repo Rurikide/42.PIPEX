@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 18:32:40 by tshimoda          #+#    #+#             */
-/*   Updated: 2022/01/19 18:05:24 by tshimoda         ###   ########.fr       */
+/*   Updated: 2022/01/19 18:28:21 by tshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/pipex_bonus.h"
 
 t_result	ft_is_valid_command(t_container *input, int i, char *cmd)
 {
@@ -87,7 +87,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_container	input;
 
-	if (argc == 5)
+	if (argc >= 5)
 	{
 		init_container(&input, argc - 1, &argv[1], envp);
 		ft_parse_command_line(&input);
