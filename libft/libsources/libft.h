@@ -6,7 +6,7 @@
 /*   By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 13:56:02 by tshimoda          #+#    #+#             */
-/*   Updated: 2022/01/18 21:39:51 by tshimoda         ###   ########.fr       */
+/*   Updated: 2022/01/19 21:02:34 by tshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+typedef enum e_bool
+{
+	false,
+	true
+}	t_bool;
 
 void	*ft_memset(void *b, int c, size_t len);
 void	ft_bzero(void *s, size_t n);
@@ -54,5 +60,6 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 int		ft_absolute(int nb);
 void	ft_free_table(char **table);
+t_bool	ft_strdouble(char *s1, char *s2);
 
 #endif

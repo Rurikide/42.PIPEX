@@ -6,7 +6,7 @@
 /*   By: tshimoda <tshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 10:58:48 by tshimoda          #+#    #+#             */
-/*   Updated: 2022/01/19 17:48:36 by tshimoda         ###   ########.fr       */
+/*   Updated: 2022/01/19 20:57:42 by tshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void	ft_prepare_x_process(t_container *input)
 	int	o_fd;
 	int	i;
 
+	if (ft_strdouble(input->argv[0], input->argv[input->argc - 1]) == true)
+		ft_perror_nl_free(input, input->argc - 2, "Files must be different");
 	o_fd = open(input->argv[input->argc - 1], \
 		O_RDWR | O_CREAT | O_TRUNC, 0777);
 	if (o_fd == FAIL)
